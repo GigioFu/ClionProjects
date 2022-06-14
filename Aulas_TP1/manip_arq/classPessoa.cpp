@@ -49,7 +49,7 @@ public:
         double *weight = nullptr;
         int *age = nullptr, tp;
         fstream classePessoa;
-        classePessoa.open("ClassePessoa.txt", ios::out | ios::in | ios::app);
+        classePessoa.open("ClassePessoa.txt", ios::out | ios::app);
         if (classePessoa.is_open())
         {
             do
@@ -76,10 +76,10 @@ public:
                 obj->setIdade(*age);
 
                 classePessoa << "Objeto tipo pessoa:\n";
-                classePessoa << "\tNome ->" << obj->getNome() << endl;
-                classePessoa << "\tEndereco -> " << obj->getEndereco() << endl;
-                classePessoa << "\tPeso -> " << obj->getPeso() << endl;
-                classePessoa << "\tIdade -> " << obj->getIdade() << "\n";
+                classePessoa << "\tNome -> " << obj->getNome() << ".\n";
+                classePessoa << "\tEndereco -> " << obj->getEndereco() << ".\n";
+                classePessoa << "\tPeso -> " << obj->getPeso() << " Kg.\n";
+                classePessoa << "\tIdade -> " << obj->getIdade() << " anos.\n";
 
                 delete obj;
                 delete name;
@@ -87,24 +87,42 @@ public:
                 delete weight;
                 delete age;
 
-                cout << "Digite 1 para continuar a cadastrar novos objetos Pessoa;\n"
-                        "Digite 0 para parar de cadaster novos objetos Pessoa;\n";
+                cout << "\nDigite 1 para continuar a cadastrar novos objetos Pessoa;\n"
+                        "Digite 0 para parar de cadaster novos objetos Pessoa;\n\n";
                 do
                 {
                     cout << "Digite aqui ->";
                     cin >> tp;
                     if (tp != 0 and tp != 1)
-                        cout << "Digite novamente!! Numero nao identificado.\n\n";
+                        cout << "\nDigite novamente!! Numero nao identificado.\n\n";
+                    fflush(stdin);
                 }
                 while (tp != 0 and tp != 1);
             }
             while (tp == 1);
             cout << "Encerrando cadastro!\n\n";
-            classePessoa << "\n\n";
+            classePessoa.close();
         }
         else
             cout << "Problema na abertura do arquivo!!\n";
-        system ("notepad ClassePessoa.txt");
+
+        classePessoa.open("ClassePessoa.txt", ios::in);
+        if (classePessoa.is_open())
+        {
+            string linha;
+            cout << "Lendo o arquivo:\n\n"
+                    "============================================================\n";
+            while (classePessoa.good())
+            {
+                getline(classePessoa, linha);
+                cout << linha << endl;
+            }
+            cout << "============================================================"
+                    "\nSucesso!\n";
+            }
+        else
+            cout << "Problema na abertura do arquivo!!\n";
+        classePessoa.close();
     }
 };
 
@@ -149,4 +167,5 @@ int main()
 {
     testaPessoa pess1;
     pess1.menu();
+    system ("notepad ClassePessoa.txt");
 }
