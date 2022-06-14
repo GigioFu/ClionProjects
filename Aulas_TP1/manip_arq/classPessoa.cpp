@@ -9,13 +9,13 @@
 
 using namespace std;
 
+//  ===================== Classes =====================
 class pessoa
 {
 private:
     string nome, endereco;
     double peso;
     int idade;
-
 public:
     pessoa()
     {
@@ -23,19 +23,108 @@ public:
         peso = idade = 0;
     }
     ~pessoa() = default;
-    void setPessoa(string& nm, string& end, double pes, int id);
+    void setNome(string& nm);
+    void setEndereco(string& ende);
+    void setPeso(double pes);
+    void setIdade(int ida);
     string getNome();
     string getEndereco();
-    double getPeso();
-    int getIdade();
+    double getPeso() const;
+    int getIdade() const;
 };
 
-void pessoa::setPessoa(string& nm, string& end, double pes, int id)
+class testaPessoa
 {
-    nome = nm,
-    endereco = end;
+private:
+    pessoa *obj;
+public:
+    testaPessoa()
+    {
+        obj = nullptr;
+    }
+    ~testaPessoa() = default;
+    void menu()
+    {
+        string *name = nullptr, *address = nullptr;
+        double *weight = nullptr;
+        int *age = nullptr, tp;
+        fstream classePessoa;
+        classePessoa.open("ClassePessoa.txt", ios::out | ios::in | ios::app);
+        if (classePessoa.is_open())
+        {
+            do
+            {
+                obj = new class pessoa;
+                name = new string;
+                address = new string;
+                weight = new double;
+                age = new int;
+
+                cout << "Objeto tipo pessoa:\n";
+                cout << "Digite o nome do objeto Pessoa ->";
+                getline (cin, *name);
+                cout << "Digite o endereco do objeto Pessoa ->";
+                getline (cin, *address);
+                cout << "Digite o peso do objeto Pessoa ->";
+                cin >> *weight;
+                cout << "Digite a idade do objeto Pessoa ->";
+                cin >> *age;
+
+                obj->setNome(*name);
+                obj->setEndereco(*address);
+                obj->setPeso(*weight);
+                obj->setIdade(*age);
+
+                classePessoa << "Objeto tipo pessoa:\n";
+                classePessoa << "\tNome ->" << obj->getNome() << endl;
+                classePessoa << "\tEndereco -> " << obj->getEndereco() << endl;
+                classePessoa << "\tPeso -> " << obj->getPeso() << endl;
+                classePessoa << "\tIdade -> " << obj->getIdade() << "\n";
+
+                delete obj;
+                delete name;
+                delete address;
+                delete weight;
+                delete age;
+
+                cout << "Digite 1 para continuar a cadastrar novos objetos Pessoa;\n"
+                        "Digite 0 para parar de cadaster novos objetos Pessoa;\n";
+                do
+                {
+                    cout << "Digite aqui ->";
+                    cin >> tp;
+                    if (tp != 0 and tp != 1)
+                        cout << "Digite novamente!! Numero nao identificado.\n\n";
+                }
+                while (tp != 0 and tp != 1);
+            }
+            while (tp == 1);
+            cout << "Encerrando cadastro!\n\n";
+            classePessoa << "\n\n";
+        }
+        else
+            cout << "Problema na abertura do arquivo!!\n";
+        system ("notepad ClassePessoa.txt");
+    }
+};
+
+//  ===================== Methods =====================
+
+void pessoa::setNome(string& nm)
+{
+    nome = nm;
+}
+void pessoa::setEndereco(string& ende)
+{
+    endereco = ende;
+}
+void pessoa::setPeso(double pes)
+{
     peso = pes;
-    idade = id;
+}
+void pessoa::setIdade(int ida)
+{
+    idade = ida;
 }
 string pessoa::getNome()
 {
@@ -45,69 +134,19 @@ string pessoa::getEndereco()
 {
     return endereco;
 }
-double pessoa::getPeso()
+double pessoa::getPeso() const
 {
     return peso;
 }
-int pessoa::getIdade()
+int pessoa::getIdade() const
 {
     return idade;
 }
 
-
-class testaPessoa
-{
-private:
-    pessoa *obj = new class pessoa;
-public:
-    static void menu();
-};
-
-void testaPessoa::menu()
-{
-    cout << "Criando objetos do tipo Pessoa:\n";
-    unsigned int tp, id;
-    string nm, end;
-    double pe;
-    fstream claPes;
-    claPes.open("ClassePessoa.txt", ios::out | ios::app);
-    if (claPes.is_open())
-    {
-        do
-        {
-            cout << "Insira o nome do objeto Pessoa ->";
-            getline(cin, nm);
-            fflush(stdin);
-
-            cout << "Insira o endereco do objeto Pessoa ->";
-            getline(cin, end);
-            fflush(stdin);
-
-            cout << "Insira o peso do objeto Pessoa ->";
-            cin >> pe;
-
-            cout << "Insira a idade do objeto Pessoa ->";
-            cin >> id;
-
-            cout << "\nDigite '1' para cadastrar outro objeto do tipo Pessoa, ou qualquer outro número para parar!\n";
-
-            claPes << "\nObjeto do tipo Pessoa:\n";
-            claPes << "\tNome --> " << nm << ";" << endl;
-            claPes << "\tEndereco --> " << end << ";" << endl;
-            claPes << "\tPeso --> " << pe << "Kg;" << endl;
-            claPes << "\tIdade --> " << id << " anos." << endl;
-            cin >> tp;
-            fflush(stdin);
-        }
-        while(tp == 1);
-    }
-    else
-        cout << "Falha na abertura do arquivo!\n";
-}
+//  =====================   main  =====================
 
 int main()
 {
-    class testaPessoa ob;
-    ob.menu();
-    system ("notepad ClassePessoa.txt");
+    testaPessoa pess1;
+    pess1.menu();
 }
